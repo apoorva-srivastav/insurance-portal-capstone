@@ -23,6 +23,6 @@ POST  http://localhost:3000/auth/login HTTP/1.1\
 content-type: application/json
 
 {
-    "username": "user_4",
+    "username": "user_7",
     "password": "pass3"
 }
