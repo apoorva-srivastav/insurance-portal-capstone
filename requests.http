@@ -1,0 +1,28 @@
+GET http://localhost:3000/users
+
+###
+POST  http://localhost:3000/auth/signUp HTTP/1.1\
+content-type: application/json
+
+{
+    "username": "user_4",
+    "password": "pass3"
+}
+
+###
+POST  http://localhost:3000/users/user HTTP/1.1\
+content-type: application/json
+
+{
+    "username": "user_2"
+}
+
+###
+
+POST  http://localhost:3000/auth/login HTTP/1.1\
+content-type: application/json
+
+{
+    "username": "user_4",
+    "password": "pass3"
+}
