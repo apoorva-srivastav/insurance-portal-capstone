@@ -1,21 +1,29 @@
-name: Deploy Container image to aws ECR
+name: Deploy to ECR
+
 on:
   push:
-    branches: [ main ]
-jobs: 
-    aws_ecr_dockerfile_deploy:
-        runs-on: ubuntu-latest
-        name: AWS ecr deploy- A job that deploys a image(s) container using a aws ecrdocker compose file deploy
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-            - name: Deploy container image to AWS ECR
-              uses: nyakaz73/aws-ecr-deploy@v0.08
-              id: deploy 
-              with:
-                access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-                secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                use_compose: true
+    branches:
+      - main
 
-            - name: Get the output status
-              run: echo "${{ steps.deploy.outputs.status }}"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry: 232243672857.dkr.ecr.us-east-1.amazonaws.com
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Build and push Docker images
+        env:
+          ECR_REGISTRY: 232243672857.dkr.ecr.us-east-1.amazonaws.com
+        run: |
+          docker build -t policy -f ./apps/policy/Dockerfile .
+          docker tag policy:latest 232243672857.dkr.ecr.us-east-1.amazonaws.com/policy:latest
+          docker push 232243672857.dkr.ecr.us-east-1.amazonaws.com/policy:latest
