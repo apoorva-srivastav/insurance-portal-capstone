@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1 # Update this with your desired AWS region
+      ECR_REGISTRY: 232243672857.dkr.ecr.us-east-1.amazonaws.com
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -16,14 +19,12 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
         with:
-          region: us-east-1
-          registry: 232243672857.dkr.ecr.us-east-1.amazonaws.com
+          region: ${{ env.AWS_REGION }}
+          registry: ${{ env.ECR_REGISTRY }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Build and push Docker images
-        env:
-          ECR_REGISTRY: 232243672857.dkr.ecr.us-east-1.amazonaws.com
         run: |
           docker build -t policy -f ./apps/policy/Dockerfile .
           docker tag policy:latest 232243672857.dkr.ecr.us-east-1.amazonaws.com/policy:latest
