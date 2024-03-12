@@ -9,7 +9,6 @@ export class AuthController {
 
   @Public()
   @HttpCode(HttpStatus.OK)
-  @UseGuards(ThrottlerGuard)
   @Post('login')
   signIn(@Body() signInDto: Record<string, any>) {
     return this.authService.signIn(signInDto.username, signInDto.password);
@@ -17,7 +16,6 @@ export class AuthController {
 
   @Public()
   @HttpCode(HttpStatus.OK)
-  // @UseGuards(ThrottlerGuard)
   @Post('signUp')
   signUp(@Body() signInDto: Record<string, any>) {
     return this.authService.signUp(signInDto.username, signInDto.password);
