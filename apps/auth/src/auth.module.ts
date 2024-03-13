@@ -13,7 +13,6 @@ import { ThrottlerModule } from '@nestjs/throttler';
   imports: [
     UsersModule,
     PassportModule,
-    UsersModule,
     AuthModule,
     JwtModule.register({
       global: true,
@@ -22,7 +21,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     }),
     MongooseModule.forRoot(
       'mongodb+srv://Test123:Test123@testcluster.xaqjodo.mongodb.net/',
-      { dbName: 'sample' },
+      { dbName: 'auth' },
     ),
     ThrottlerModule.forRoot([
       {

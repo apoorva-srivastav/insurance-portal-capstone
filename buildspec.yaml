@@ -13,7 +13,7 @@ phases:
       - docker build -t policy -f ./apps/policy/Dockerfile .
       - docker tag policy:latest 232243672857.dkr.ecr.us-east-1.amazonaws.com/policy:latest
 
-      - docker build -t auth -f ./apps/auth/Dockerfile .
+      - docker buildx build --platform linux/amd64 -t auth -f ./apps/auth/Dockerfile .
       - docker tag auth:latest 232243672857.dkr.ecr.us-east-1.amazonaws.com/auth:latest
 
   post_build:
