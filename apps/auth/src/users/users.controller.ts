@@ -1,11 +1,16 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '../gaurds/auth.guard';
+import { RolesGuard } from '../gaurds/role.gaurd';
+import { Role, Roles } from '../roles/roles.decorator';
 
 @Controller('users')
 export class UsersController {
   constructor(public usersService: UsersService) {}
 
+
+  //@Roles(Role.Admin)
+  //@UseGuards(AuthGuard, RolesGuard )
   @UseGuards(AuthGuard)
   @Get()
   listUsers() {
@@ -18,8 +23,4 @@ export class UsersController {
     return this.usersService.findOneUser(body.username);
   }
 
-  @Post('signIn')
-  createUser(@Body() body) {
-    return this.usersService.create(body);
-  }
 }

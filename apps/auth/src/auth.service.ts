@@ -25,14 +25,18 @@ export class AuthService {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const payload = {
       username: username,
-      password: pass,
+      userId: existingUser.userId,
+      role: existingUser.role
     };
+    
     return {
+      existingUser,
       access_token: await this.jwtService.signAsync(payload),
+      refresh_token: await this.jwtService.signAsync(payload, {secret: 'rt', expiresIn: '1w'})
     };
   }
 
-  async signUp(username: string, pass: string): Promise<any> {
+  async signUp(username: string, pass: string, role: string): Promise<any> {
     const user = await this.usersService.findOneUser(username);
     if (user) {
       throw new BadRequestException('Username already in use.');
@@ -42,10 +46,21 @@ export class AuthService {
     const payload = {
       username: username,
       password: hashPass,
+      role: role,
     };
 
     const newUser = await this.usersService.create(payload);
 
     return newUser;
+  }
+
+  async validateUser(username: string, pass: string): Promise<any> {
+    const user = await this.usersService.findOneUser(username);
+    const isMatch = await bcrypt.compare(pass, user?.password);
+    if (user && isMatch) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
   }
 }

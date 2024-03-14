@@ -1,10 +1,11 @@
-import { Body, Controller, Post, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, HttpCode, HttpStatus, Logger } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Public } from './gaurds/constants';
-import { ThrottlerGuard } from '@nestjs/throttler';
+import { Public } from './roles/roles.decorator';
 
 @Controller('auth')
 export class AuthController {
+  protected readonly logger = new Logger(AuthController.name);
+
   constructor(private authService: AuthService) {}
 
   @Public()
@@ -18,6 +19,6 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('signUp')
   signUp(@Body() signInDto: Record<string, any>) {
-    return this.authService.signUp(signInDto.username, signInDto.password);
+    return this.authService.signUp(signInDto.username, signInDto.password, signInDto.role);
   }
 }
