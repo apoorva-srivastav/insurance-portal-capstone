@@ -17,4 +17,19 @@ export class PolicyService {
   async filterPolicy(payload) {
     return this.policyModel.find(payload);
   }
+
+  async addPolicy(payload) {
+    const newPolicy = await this.policyModel.create(payload);
+    newPolicy.save();
+    return newPolicy;
+  }
+
+  async updatePolicy(payload) {
+    const updatedPolicy = await this.policyModel.findOneAndUpdate(
+      { policyId: payload.policyId },
+      payload,
+      { new: true },
+    );
+    return updatedPolicy;
+  }
 }

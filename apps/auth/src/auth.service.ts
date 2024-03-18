@@ -6,6 +6,7 @@ import {
 import { UsersService } from './users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { jwtConstants } from './constants';
 
 @Injectable()
 export class AuthService {
@@ -63,4 +64,50 @@ export class AuthService {
     }
     return null;
   }
+
+   async createToken({userId, username, role}): Promise<any> {
+    
+    const token = this.jwtService.sign(
+      {
+        userId,
+        role,
+        username
+      }
+    );
+//console.log('in auth>>>', userId, username, role)
+    return {
+      user_id: userId,
+      token,
+    };
+  }
+
+  // public async deleteTokenForUserId(userId: string) {
+  //   return await this.tokenRepo.delete({
+  //     user_id: userId,
+  //   });
+  // }
+
+  async decodeToken(token: string) {
+    // const tokenModel = await this.tokenRepo.findOne({
+    //   where: { token },
+    // });
+    let result = null;
+
+    // if (tokenModel) {
+      try {
+        // const tokenData = await this.jwtService.verifyAsync(token, {
+        //   secret: jwtConstants.secret,
+        // });
+        const tokenData = await this.jwtService.decode(token, { complete: true });
+//console.log('token data>>>>', tokenData)
+       
+          result = tokenData;
+        
+      } catch (e) {
+        result = null;
+      }
+    
+    return result;
+  }
+  
 }

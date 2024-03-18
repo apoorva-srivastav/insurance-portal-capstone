@@ -25,7 +25,8 @@ import { LoggerModule } from '../../../libs/common/src/logger/logger.module';
     MongooseModule.forRoot(
       'mongodb+srv://Test123:Test123@testcluster.xaqjodo.mongodb.net/',
       { dbName: 'auth' },
-    )
+    ),
+    // MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])
   ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
