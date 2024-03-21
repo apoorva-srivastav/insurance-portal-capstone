@@ -8,6 +8,11 @@ export class UsersController {
 
     constructor(private service: UsersService) { }
 
+    @Get()
+    test() {
+        return 'user api working correctly';
+    }
+
     @MessagePattern('users_list')
     @Get()
     getAll() {
@@ -28,7 +33,7 @@ export class UsersController {
 
     @MessagePattern('user_search_by_id')
     async get(@Body() userId) {
-        const user = await  this.service.getUser(userId);
+        const user = await this.service.getUser(userId);
         //console.log('user_search_by_id >>>', userId, user)
         return user
     }
@@ -36,11 +41,11 @@ export class UsersController {
     @MessagePattern('create_new_user')
     @Post('create')
     async create(@Body() user: User) {
-    const existingUser = await this.service.getUserByUsername(user.username);
+        const existingUser = await this.service.getUserByUsername(user.username);
 
-    if (existingUser) {
-      throw new BadRequestException('Username already in use.');
-    }
+        if (existingUser) {
+            throw new BadRequestException('Username already in use.');
+        }
         return this.service.createUser(user);
     }
 

@@ -1,4 +1,18 @@
 services:
+  
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=Mysqldb@1
+
+    
+    ports:
+      - '3306:3306'
+    networks:
+      - default
+
   auth:
     build:
       context: .
@@ -21,6 +35,18 @@ services:
       - ./apps/policy/.env
     ports:
       - '3001:3001'
+    volumes:
+      - .:/usr/src/app
+  users:
+    build:
+      context: .
+      dockerfile: ./apps/users/Dockerfile
+      target: development
+    command: npm run start:dev-users
+    env_file:
+      - ./apps/users/.env
+    ports:
+      - '3002:3002'
     volumes:
       - .:/usr/src/app
   mongo:

@@ -10,12 +10,17 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker images...
 
-      - docker build -t policy -f ./apps/policy/Dockerfile .
+      - docker buildx build --platform linux/amd64  -t policy -f ./apps/policy/Dockerfile .
       - docker tag policy:latest 232243672857.dkr.ecr.us-east-1.amazonaws.com/policy:latest
 
       - docker buildx build --platform linux/amd64 -t auth -f ./apps/auth/Dockerfile .
       - docker tag auth:latest 232243672857.dkr.ecr.us-east-1.amazonaws.com/auth:latest
 
+      - docker buildx build --platform linux/amd64  -t api-gateway -f ./apps/api-gateway/Dockerfile .
+      - docker tag api-gateway:latest 232243672857.dkr.ecr.us-east-1.amazonaws.com/api-gateway:latest
+      
+
+      - docker buildx build --platform linux/amd64  -t users -f ./apps/users/Dockerfile .
   post_build:
     commands:
       - echo Build completed on `date`

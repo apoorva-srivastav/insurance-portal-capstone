@@ -14,17 +14,17 @@ export class PolicyService {
   async findAll(): Promise<IPolicy[]> {
     return this.policyModel.find();
   }
-  async filterPolicy(payload) {
+  async filterPolicy(payload): Promise<any> {
     return this.policyModel.find(payload);
   }
 
-  async addPolicy(payload) {
+  async addPolicy(payload: IPolicy): Promise<IPolicy> {
     const newPolicy = await this.policyModel.create(payload);
     newPolicy.save();
     return newPolicy;
   }
 
-  async updatePolicy(payload) {
+  async updatePolicy(payload: IPolicy): Promise<IPolicy> {
     const updatedPolicy = await this.policyModel.findOneAndUpdate(
       { policyId: payload.policyId },
       payload,

@@ -20,13 +20,12 @@ import { LoggerModule } from '../../../libs/common/src/logger/logger.module';
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '20s' },
+      signOptions: { expiresIn: '60s' },
     }),
     MongooseModule.forRoot(
       'mongodb+srv://Test123:Test123@testcluster.xaqjodo.mongodb.net/',
       { dbName: 'auth' },
-    ),
-    // MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])
+    )
   ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
