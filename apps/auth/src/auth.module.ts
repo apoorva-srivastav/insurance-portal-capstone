@@ -7,13 +7,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UsersModule } from './users/users.module';
 import { jwtConstants } from './constants';
 import { LoggerModule } from '../../../libs/common/src/logger/logger.module';
   
 @Module({
   imports: [
-  UsersModule,
     PassportModule,
     AuthModule,
     LoggerModule,

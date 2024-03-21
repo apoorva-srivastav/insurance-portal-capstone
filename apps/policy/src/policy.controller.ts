@@ -9,27 +9,23 @@ export class PolicyController {
 
   @MessagePattern('get_all_policies')
   @Get()
-  getAllPolicies() {
+  getAllPolicies(): Promise<IPolicy[]> {
     return this.policyService.findAll();
   }
 
   @MessagePattern('search_policy')
-  @Get('search')
-  getFilteredPolicies(@Body() body) {
+  getFilteredPolicies(@Body() body): Promise<IPolicy> {
     return this.policyService.filterPolicy(body);
   }
 
   @MessagePattern('add_new_policy')
-  @Post('addNew')
-  addNewPolicy(@Body() body) {
+  addNewPolicy(@Body() body: IPolicy): Promise<IPolicy> {
     return this.policyService.addPolicy(body);
   }
 
-  //@Roles(Role.Admin)
-  //@UseGuards( RolesGuard )
   @MessagePattern('update_policy')
   @Post('update')
-  updatePolicy(@Body() body) {
+  updatePolicy(@Body() body: IPolicy): Promise<IPolicy> {
     return this.policyService.updatePolicy(body);
   }
 }

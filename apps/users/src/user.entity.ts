@@ -16,6 +16,21 @@ export class User {
     role: string;
 
     @Column() 
-    age: string;
+    age: number;
 
+}
+
+
+export class createUserDto {
+    @Column()
+    password:string;
+
+    @Column({ length: 25 })
+    username:string;
+
+    @Column()
+    role: string;
+
+    @Column() 
+    age: number;
 }

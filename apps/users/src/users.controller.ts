@@ -1,7 +1,8 @@
 import { Controller, Post, Body, Get, Put, Delete, Param, BadRequestException } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './user.entity';
+import { User, createUserDto } from './user.entity';
 import { MessagePattern } from '@nestjs/microservices';
+import e from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -23,36 +24,41 @@ export class UsersController {
     public async searchUserByCredentials(searchParams: {
         username: string;
         password: string;
-    }): Promise<User> {
+    }): Promise<User | unknown> {
         let user: any;
 
         user = await this.service.getUserByUsername(searchParams.username);
-        //console.log('user_search_by_credentials >>>', user, searchParams.username)
+
+        if (!user) {
+            const excep =  new BadRequestException('User not found. Signup to login.');
+            return excep.getResponse();
+        }
+
         return user;
     }
 
     @MessagePattern('user_search_by_id')
-    async get(@Body() userId) {
+    async get(@Body() userId):Promise<User>  {
         const user = await this.service.getUser(userId);
-        //console.log('user_search_by_id >>>', userId, user)
         return user
     }
 
     @MessagePattern('create_new_user')
-    @Post('create')
-    async create(@Body() user: User) {
+    async create(@Body() user): Promise<User | unknown> {
         const existingUser = await this.service.getUserByUsername(user.username);
-
         if (existingUser) {
-            throw new BadRequestException('Username already in use.');
+            const excep = new BadRequestException('Username already in use.');
+            return excep.getResponse();
         }
+
         return this.service.createUser(user);
     }
 
     @MessagePattern('update_user')
     @Put()
-    update(@Body() user: User) {
-        return this.service.updateUser(user);
+    update(@Body() user: User): Promise<User> {
+        const updatedUser =  this.service.updateUser(user);
+        return updatedUser;
     }
 
     @Delete(':id')

@@ -7,9 +7,8 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('API GATEWAY')
-    .setDescription('The API gatewaydescription')
+    .setDescription('All the apis are accessible through gateway API')
     .setVersion('1.0')
-    .addTag('api-gateway')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

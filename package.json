@@ -13,7 +13,7 @@
     "start:dev-auth": "nest start --watch auth",
     "start:dev-policy": "nest start policy",
     "start:dev-users": "nest start users",
-    "start:dev-api-gateway": "nest start api-gateway",
+    "start:dev-api-gateway": "nest start --watch api-gateway",
     "start-dev": "nest start --watch",
     "docker-build": "docker-compose build",
     "start:debug": "nest start --debug --watch",
